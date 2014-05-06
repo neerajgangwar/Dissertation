@@ -1,0 +1,1 @@
+alpha = computeSparseCodes(A_train(:, 1:32), Dinit);
