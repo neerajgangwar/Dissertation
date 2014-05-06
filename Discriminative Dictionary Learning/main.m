@@ -20,7 +20,7 @@ sparsity = 25;
 
 reg2 = 0.01;
 t0 = iterations/10;
-rho = 0.1;
+rho = 2;
 nu = 10^(-5); 
 
 [Dinit, Winit] = initialization(A_train, H_train, dictsize, sparsity);
@@ -89,8 +89,8 @@ for i = 1 : 1 : iterations
     end
     D = Di;
     W = Wi;
-    Wi = Wi - 0.1 * (grad_W + nu * Wi);
-    Di = Di - 0.1 * ( (-Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));
+    Wi = Wi - rho * (grad_W + nu * Wi);
+    Di = Di - rho * ( (-Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));
     Di = normcols(Di);
 end
   

@@ -1,1 +1,4 @@
-alpha = computeSparseCodes(A_train(:, 1:32), Dinit);
+a = A_train(:, 1:32);
+alpha = computeSparseCodes(a, D);
+plot(alpha)
+classification
