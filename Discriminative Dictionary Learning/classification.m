@@ -1,12 +1,13 @@
+D = Di;
 G = D'*D;
-gamma = omp(D'*A_test, G, sparsity);
+gamma = computeSparseCodes(A_test, D);
 pos = 0;
 neg = 0;
 
-for i = 1 : size(gamma, 2)
-    a = gamma(:, i);
-    estClass = estimateClass(A_test(:, i), D, a, 38);
-    [C, actualClass] = max(H_test(:, i));
+for u = 1 : size(gamma, 2)
+    a = gamma(:, u);
+    estClass = estimateClass(A_test(:, u), D, a, 38);
+    [C, actualClass] = max(H_test(:, u));
     
     if actualClass == estClass
         pos = pos + 1;
@@ -16,5 +17,4 @@ for i = 1 : size(gamma, 2)
     
 end
 
-disp(pos);
-disp(neg);
+fprintf([num2str(pos) ' , ' num2str(neg) ' , ' num2str(pos/(pos+neg)) '\n']);

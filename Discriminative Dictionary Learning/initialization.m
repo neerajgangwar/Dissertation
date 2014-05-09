@@ -17,11 +17,11 @@
 function [Dinit, Winit] = initialization(training_feats, H_train, dictsize, sparsitythres)
 
 fprintf(['Initialization...\n']);
-% numClass = size(H_train, 1); % number of objects
-% numPerClass = round(dictsize/numClass); % initial points from each classes
-% Dinit = []; % for LC-Ksvd1 and LC-Ksvd2
-% 
-% iterations = 5;
+numClass = size(H_train, 1); % number of objects
+numPerClass = round(dictsize/numClass); % initial points from each classes
+Dinit = []; % for LC-Ksvd1 and LC-Ksvd2
+
+% iterations = 3;
 % 
 % for classid = 1 : numClass
 %     col_ids = find(H_train(classid, :)==1);
@@ -41,13 +41,21 @@ fprintf(['Initialization...\n']);
 
 % Dinit = randn(size(training_feats, 1), dictsize);
 % Winit = randn(dictsize, numClass);
-Dpart = training_feats(:, 1 : dictsize);
-para.data = training_feats;
-para.Tdata = sparsitythres;
-para.iternum = 5;
-para.memusage = 'high';
-para.initdict = normcols(Dpart);
-[Dinit, Xpart, Errpart] = ksvd(para, '');
+% Dpart = training_feats(:, 1 : dictsize);
+% para.data = training_feats;
+% para.Tdata = sparsitythres;
+% para.iternum = 5;
+% para.memusage = 'high';
+% para.initdict = normcols(Dpart);
+% [Dinit, Xpart, Errpart] = ksvd(para, '');
+
+param.K = dictsize;  % learns a dictionary with 100 elements
+param.lambda = 0.15;
+param.numThreads = -1; % number of threads
+param.batchsize = 400;
+param.verbose = true;
+param.iter = 1000;
+Dinit = mexTrainDL(training_feats,param);
 
 param1.lambda = 0.15;
 param1.lambda2 = 0;

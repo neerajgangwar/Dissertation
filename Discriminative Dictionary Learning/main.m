@@ -14,28 +14,33 @@ start_spams
 %% load features
 load Data/YaleExtendedBDatabase_504.mat
 
-iterations = 15;
-dictsize = 38*15;
+A_train = mat2gray(A_train);
+A_test = mat2gray(A_test);
+
+numClasses = size(H_train, 1);
+iterations = 200;
+dictsize = 38*20;
 sparsity = 25;
 
 reg2 = 0.01;
 t0 = iterations/10;
-rho = 2;
+rho1 = 5;
+rho2 = 0.1;
 nu = 10^(-5); 
 
 [Dinit, Winit] = initialization(A_train, H_train, dictsize, sparsity);
-D1 = Dinit;
 
+% load Data/dict.mat
 %% Task Driven Dictionary Learning
 D = [];
 W = [];
-Di = normcols(Dinit);
+Di = Dinit;
 Wi = Winit;
 
 %% Stochastic Gradient Descent
 % for i = 1 : 1 : iterations
 %     fprintf(['Computing Sparse Code for iteration ' num2str(i) '...\n']);
-%     alpha = computeSparseCodes(A_train(:, 1), Di);
+%     alpha = computeSparseCodes(A_train, Di);
 %     
 %     
 %     % Stochastic gradient descent
@@ -43,7 +48,7 @@ Wi = Winit;
 %     for j = 1 : 1 : size(alpha, 2)
 %         alp = alpha(:, j);
 %         lambda = find(alp);
-%         [cost, grad_alpha, grad_W] = softmaxCost(Wi, alp, H_train(:, j));
+%         [cost, grad_alpha, grad_W] = softmaxCost(Wi(:), numClasses, dictsize, alp(:), H_train(:, j));
 %         
 %         D_lambda = Di(:, lambda);
 %         grad_alpha_delta = grad_alpha(lambda);
@@ -53,24 +58,41 @@ Wi = Winit;
 %         beta_star(lambda) = beta_lambda;
 %         
 %         % Choosing learning rate
-%         rho_t = min([rho rho*(t0/i)]);
+%         % rho_t = min([rho rho*(t0/i)]);
 %         
-%         Wi = Wi - rho_t * (grad_W + nu * Wi);
-%         Di = Di - rho_t * ( (-Di*beta_star*alp') + ((A_train(:, j) - Di*alp)*beta_star'));
-%         Di = normcols(Di);
+%         Wi = Wi - rho1 * (grad_W + nu * Wi);
+%         Di = Di - rho1 * ( (-Di*beta_star*alp') + ((A_train(:, j) - Di*alp)*beta_star'));
 %     end
+%     test
 % end
 % 
 % D = Di;
 % W = Wi;
 
+mat_gradW = [];
+mat_gradAlp = [];
+mat_cost = [];
+
+
+%% Debugging code
+% W = [Wi(:)];
+% d = [alpha(:)];
+% alpha = computeSparseCodes(A_train, Di);
+% [cost, grad_alpha, grad_W] = softmaxCost(Wi, numClasses, dictsize, d, H_train);
+% numGrad = computeNumericalGradient( @(x) softmaxCost(W, numClasses, dictsize, x, H_train), d);
+                            
 
 %% Gradient Descent
 for i = 1 : 1 : iterations
+    classification
     fprintf(['Computing Sparse Code for iteration ' num2str(i) '...\n']);
     alpha = computeSparseCodes(A_train, Di);
     fprintf(['Gradient descent for iteration ' num2str(i) '...\n']);
-    [cost, grad_alpha, grad_W] = softmaxCost(Wi, alpha, H_train);
+    [cost, grad_alpha, grad_W] = softmaxCost(Wi(:), numClasses, dictsize, alpha(:), H_train);
+    
+    mat_gradW = [mat_gradW norm(grad_W)];
+    mat_gradAlp = [mat_gradAlp norm(grad_alpha)];
+    mat_cost = [mat_cost norm(cost)];
     
     beta_star = [];
     
@@ -83,14 +105,12 @@ for i = 1 : 1 : iterations
         
         beta_lambda = ((D_lambda'*D_lambda) + reg2 * eye(size(D_lambda'*D_lambda))) \ grad_alpha_delta;
         beta(lambda) = beta_lambda;
-        
-        beta_star = [beta_star beta];
-        
+        beta_star = [beta_star beta];        
+        % Di = Di - rho1 * ( (-Di*beta*alp') + ((A_train(:, j) - Di*alp)*beta'));
     end
     D = Di;
     W = Wi;
-    Wi = Wi - rho * (grad_W + nu * Wi);
-    Di = Di - rho * ( (-Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));
-    Di = normcols(Di);
+    Wi = Wi - rho1 * (grad_W + nu * Wi);
+    Di = Di - rho2 * ( (-Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));
 end
   
