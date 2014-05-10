@@ -20,13 +20,13 @@ A_test = mat2gray(A_test);
 numClasses = size(H_train, 1);
 iterations = 200;
 dictsize = 38*20;
-sparsity = 25;
+sparsity = 30;
 
 reg2 = 0.01;
-t0 = iterations/10;
+t0 = iterations/20;
 rho1 = 5;
 rho2 = 0.1;
-nu = 10^(-5); 
+nu = 10^(-3); 
 
 [Dinit, Winit] = initialization(A_train, H_train, dictsize, sparsity);
 
@@ -40,6 +40,7 @@ Wi = Winit;
 %% Stochastic Gradient Descent
 % for i = 1 : 1 : iterations
 %     fprintf(['Computing Sparse Code for iteration ' num2str(i) '...\n']);
+%     Di = normcols(Di);
 %     alpha = computeSparseCodes(A_train, Di);
 %     
 %     
@@ -58,11 +59,12 @@ Wi = Winit;
 %         beta_star(lambda) = beta_lambda;
 %         
 %         % Choosing learning rate
-%         % rho_t = min([rho rho*(t0/i)]);
+%         rho = min([rho1 rho1*(t0/i)]);
 %         
-%         Wi = Wi - rho1 * (grad_W + nu * Wi);
-%         Di = Di - rho1 * ( (-Di*beta_star*alp') + ((A_train(:, j) - Di*alp)*beta_star'));
+%         Wi = Wi - rho * (grad_W + nu * Wi);
+%         Di = Di - rho * ( (-Di*beta_star*alp') + ((A_train(:, j) - Di*alp)*beta_star'));
 %     end
+%     Di = normcols(Di);
 %     test
 % end
 % 
@@ -85,6 +87,8 @@ mat_cost = [];
 %% Gradient Descent
 for i = 1 : 1 : iterations
     classification
+    test
+    
     fprintf(['Computing Sparse Code for iteration ' num2str(i) '...\n']);
     alpha = computeSparseCodes(A_train, Di);
     fprintf(['Gradient descent for iteration ' num2str(i) '...\n']);
@@ -105,12 +109,14 @@ for i = 1 : 1 : iterations
         
         beta_lambda = ((D_lambda'*D_lambda) + reg2 * eye(size(D_lambda'*D_lambda))) \ grad_alpha_delta;
         beta(lambda) = beta_lambda;
-        beta_star = [beta_star beta];        
+        beta_star = [beta_star beta];       
         % Di = Di - rho1 * ( (-Di*beta*alp') + ((A_train(:, j) - Di*alp)*beta'));
     end
-    D = Di;
+    rho = min([rho1 rho1*(t0/i)]);
+    fprintf(['rho = ' num2str(rho) '\n']);
+    Wi = Wi - rho * (grad_W + nu * Wi);
+    Di = Di - rho * ( -(Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));    
+    D = normcols(Di);
     W = Wi;
-    Wi = Wi - rho1 * (grad_W + nu * Wi);
-    Di = Di - rho2 * ( (-Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));
+    fprintf('\n');
 end
-  

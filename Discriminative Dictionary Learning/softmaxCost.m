@@ -32,7 +32,6 @@ function [cost, grad_alpha, grad_W] = softmaxCost(W, numClasses, inputSize, data
     p = bsxfun(@rdivide, temp1, denominator);
     % save('results2.mat', 'p', '-append');
     cost = (-1/m) * sum(sum(y .* log(p)));
-    t = y .* log(p);
     % save('results2.mat', 't', 'temp1', '-append');
     % fprintf([num2str(cost) '\n']);
 
