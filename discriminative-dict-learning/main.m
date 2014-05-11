@@ -24,7 +24,7 @@ sparsity = 30;
 
 reg2 = 0.01;
 t0 = iterations/20;
-rho1 = 5;
+rho1 = 10;
 rho2 = 0.1;
 nu = 10^(-3); 
 
@@ -86,11 +86,21 @@ mat_cost = [];
 
 %% Gradient Descent
 for i = 1 : 1 : iterations
+    
+%     if i > 6
+%         fprintf('');
+%     end
+    
     classification
     test
     
     fprintf(['Computing Sparse Code for iteration ' num2str(i) '...\n']);
+    tic
     alpha = computeSparseCodes(A_train, Di);
+    toc
+    
+    fprintf('Norm of alpha = %f\n', norm(alpha(:)));
+    
     fprintf(['Gradient descent for iteration ' num2str(i) '...\n']);
     [cost, grad_alpha, grad_W] = softmaxCost(Wi(:), numClasses, dictsize, alpha(:), H_train);
     
@@ -112,11 +122,17 @@ for i = 1 : 1 : iterations
         beta_star = [beta_star beta];       
         % Di = Di - rho1 * ( (-Di*beta*alp') + ((A_train(:, j) - Di*alp)*beta'));
     end
+    
     rho = min([rho1 rho1*(t0/i)]);
     fprintf(['rho = ' num2str(rho) '\n']);
+    
     Wi = Wi - rho * (grad_W + nu * Wi);
-    Di = Di - rho * ( -(Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));    
-    D = normcols(Di);
+    % Di = Di - rho * ( -(Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));
+    delta_D = ( -(Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));
+    Di = Di - delta_D;
+    Di = normcols(Di);
+    
+    D = Di;
     W = Wi;
     fprintf('\n');
 end
