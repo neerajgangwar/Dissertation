@@ -1,6 +1,7 @@
 clear all
 clc
 
+addpath('./sparse-lib');
 feature_extraction    
 
 %% Classification process
@@ -18,6 +19,9 @@ alpha = compute_sparse_codes(A_test, D);
 
 fprintf('Classification...\n');
 
+H_act = [];
+H_pred = [];
+
 for i = 1 : 1 : size(alpha, 2)
     alp = alpha(:, i);
     
@@ -25,6 +29,9 @@ for i = 1 : 1 : size(alpha, 2)
         face_class = face_classification(D, A_test(:, i), alp, atoms_per_class);
         [C, I] = max(H_test(:, i));
         actual_class = I;
+        
+        H_act = [H_act actual_class];
+        H_pred = [H_pred face_class];
         
         if face_class == actual_class
             pos = pos + 1;
