@@ -4,7 +4,8 @@ clc
 
 %% Load training data
 fprintf('Loading data...\n');
-load YaleExtendedBDatabase.mat A_train
+load ARdb.mat A_train
+A_train = double(A_train);
 
 %% Make data zero mean
 fprintf('Making data zero mean...\n');
@@ -21,6 +22,6 @@ S = A*S;
 
 %% Save data in a mat file
 fprintf('Saving data...\n');
-save eigenfacesYale S D
+save eigenfaces_ARdb.mat S D
 
 fprintf('Done! :)\n');
