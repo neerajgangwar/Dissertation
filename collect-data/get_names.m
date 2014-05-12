@@ -1,4 +1,4 @@
-function outNames = GetNames(dirName)
+function outNames = get_names(dirName)
 dirList = dir(dirName);
 names = {dirList.name};
 outNames = {};
