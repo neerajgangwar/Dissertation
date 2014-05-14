@@ -7,15 +7,17 @@ addpath('./sparse-lib/');
 %% load dataset
 
 % for randomfaces, uncomment this code.
-% load data/ARdb.mat
-% R = randn(30, size(A_test, 1));
-% 
+% fprintf('Computing D and A_test\n');
+% load data/YaleExtendedBDatabase.mat
+% feature_dim = input('Please enter feature dimension = ');
+% R = randn(feature_dim, size(A_test, 1));
 % D = R * double(mat2gray(A_train));
 % A_test = R * double(mat2gray(A_test));
 
-% for downsampling
-load data/ARdb_30.mat
-
+% for downsampling, uncomment this code
+feature_dim = input('Please enter feature dimension = ');
+datafile = ['data/YaleExtendedBDatabase_' num2str(feature_dim) '.mat'];
+load(datafile);
 D = double(mat2gray(A_train));
 A_test = double(mat2gray(A_test));
 
@@ -25,7 +27,7 @@ neg = 0;
 errorImg = [];
 
 num_classes = size(H_train, 1);
-atoms_per_class = size(D, 2)/num_classes;
+atoms_per_class = ceil(size(D, 2)/num_classes);
 
 fprintf('Atoms per class = %f\n', atoms_per_class);
 
