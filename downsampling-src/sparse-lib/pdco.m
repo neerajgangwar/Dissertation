@@ -179,11 +179,11 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
 
   global pdDDD1 pdDDD2 pdDDD3
 
-  fprintf('\n   --------------------------------------------------------')
-  fprintf('\n   pdco.m                            Version of 19 Nov 2003')
-  fprintf('\n   Primal-dual barrier method to minimize a convex function')
-  fprintf('\n   subject to linear constraints Ax + r = b,  bl <= x <= bu')
-  fprintf('\n   --------------------------------------------------------\n')
+  % fprintf('\n   --------------------------------------------------------')
+  % fprintf('\n   pdco.m                            Version of 19 Nov 2003')
+  % fprintf('\n   Primal-dual barrier method to minimize a convex function')
+  % fprintf('\n   subject to linear constraints Ax + r = b,  bl <= x <= bu')
+  % fprintf('\n   --------------------------------------------------------\n')
 
   m = length(b);
   n = length(bl);
@@ -197,14 +197,14 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
   operator  =  ischar(Fname);
   explicitF = ~operator;
   
-  if explicitF
-    fprintf('\n')
-    disp('The objective is linear')
-  else
-    fname = Fname;
-    fprintf('\n')
-    disp(['The objective function  is named       ' fname])
-  end
+  % if explicitF
+    % fprintf('\n')
+    % disp('The objective is linear')
+  % else
+    % fname = Fname;
+    % fprintf('\n')
+    % disp(['The objective function  is named       ' fname])
+  % end
 
   %---------------------------------------------------------------------
   % Decode Aname.
@@ -217,24 +217,24 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
   if explicitA            % assume Aname is an explicit matrix A.
     nnzA   = nnz(Aname);
     if  issparse(Aname)
-      fprintf('The matrix A is an explicit sparse matrix')
+      % fprintf('The matrix A is an explicit sparse matrix')
     else
-      fprintf('The matrix A is an explicit dense matrix' )
+      % fprintf('The matrix A is an explicit dense matrix' )
     end
-    fprintf('\n\nm        = %8g     n        = %8g      nnz(A)  =%9g', m,n,nnzA)
+    % fprintf('\n\nm        = %8g     n        = %8g      nnz(A)  =%9g', m,n,nnzA)
   else
     if ischar(Aname)
-      disp(['The matrix A is an operator defined by ' Aname])
+      % disp(['The matrix A is an operator defined by ' Aname])
     end
-    fprintf('\nm        = %8g     n        = %8g', m,n)
+    % fprintf('\nm        = %8g     n        = %8g', m,n)
   end
 
   normb  = norm(b ,inf);   normx0 = norm(x0,inf);
   normy0 = norm(y0,inf);   normz0 = norm(z0,inf);
-  fprintf('\nmax |b | = %8g     max |x0| = %8.1e', normb , normx0)
-  fprintf(                '      xsize   = %8.1e', xsize)
-  fprintf('\nmax |y0| = %8g     max |z0| = %8.1e', normy0, normz0)
-  fprintf(                '      zsize   = %8.1e', zsize)
+  % fprintf('\nmax |b | = %8g     max |x0| = %8.1e', normb , normx0)
+  % fprintf(                '      xsize   = %8.1e', xsize)
+  % fprintf('\nmax |y0| = %8g     max |z0| = %8.1e', normy0, normz0)
+  % fprintf(                '      zsize   = %8.1e', zsize)
 
   %---------------------------------------------------------------------
   % Initialize.
@@ -286,31 +286,31 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
   gamma     = max(d1);
   delta     = max(d2);
 
-  fprintf('\n\nx0min    = %8g     featol   = %8.1e', x0min, featol)
-  fprintf(                  '      d1max   = %8.1e', gamma)
-  fprintf(  '\nz0min    = %8g     opttol   = %8.1e', z0min, opttol)
-  fprintf(                  '      d2max   = %8.1e', delta)
-  fprintf(  '\nmu0      = %8.1e     steptol  = %8g', mu0  , steptol)
-  fprintf(                  '     bigcenter= %8g'  , bigcenter)
+  % fprintf('\n\nx0min    = %8g     featol   = %8.1e', x0min, featol)
+  % fprintf(                  '      d1max   = %8.1e', gamma)
+  % fprintf(  '\nz0min    = %8g     opttol   = %8.1e', z0min, opttol)
+  % fprintf(                  '      d2max   = %8.1e', delta)
+  % fprintf(  '\nmu0      = %8.1e     steptol  = %8g', mu0  , steptol)
+  % fprintf(                  '     bigcenter= %8g'  , bigcenter)
 
-  fprintf('\n\nLSQR:')
-  fprintf('\natol1    = %8.1e     atol2    = %8.1e', atol1 , atol2 )
-  fprintf(                  '      btol    = %8.1e', btol )
-  fprintf('\nconlim   = %8.1e     itnlim   = %8g'  , conlim, itnlim)
-  fprintf(                  '      show    = %8g'  , show )
+  % fprintf('\n\nLSQR:')
+  % fprintf('\natol1    = %8.1e     atol2    = %8.1e', atol1 , atol2 )
+  % fprintf(                  '      btol    = %8.1e', btol )
+  % fprintf('\nconlim   = %8.1e     itnlim   = %8g'  , conlim, itnlim)
+  % fprintf(                  '      show    = %8g'  , show )
   
 % Method =  3;  %%% Hardwire LSQR
 % Method = 41;  %%% Hardwire K4 and sparse LU
 
-  fprintf('\n\nMethod   = %8g     (1=chol  2=QR  3=LSQR  41=K4)', Method)
+  % fprintf('\n\nMethod   = %8g     (1=chol  2=QR  3=LSQR  41=K4)', Method)
 
   if wait
-    fprintf('\n\nReview parameters... then type "return"\n')
+    % fprintf('\n\nReview parameters... then type "return"\n')
     keyboard
   end
 
   if eta < 0
-    fprintf('\n\nLinesearch disabled by eta < 0')
+    % fprintf('\n\nLinesearch disabled by eta < 0')
   end
 
   %---------------------------------------------------------------------
@@ -323,7 +323,7 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
     if Method==3
       % relax
     else
-      fprintf('\n\nWhen A is an operator, we have to use Method = 3')
+      % fprintf('\n\nWhen A is an operator, we have to use Method = 3')
       Method = 3;
     end
   end
@@ -470,22 +470,22 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
 
   head1   = '\n\nItn   mu stepx stepz  Pinf  Dinf';
   head2   = '  Cinf   Objective    nf  center';
-  fprintf([ head1 head2 head3 ])
+  % fprintf([ head1 head2 head3 ])
 
   regterm = norm(d1.*x)^2  +  norm(d2.*y)^2;
   objreg  = obj  +  0.5*regterm;
   objtrue = objreg * theta;
 
-  fprintf('\n%3g                 ', PDitns        )
-  fprintf('%6.1f%6.1f' , log10(Pinf ), log10(Dinf))
-  fprintf('%6.1f%15.7e', log10(Cinf0), objtrue    )
-  fprintf('   %8.1f'   , center                   )
+  % fprintf('\n%3g                 ', PDitns        )
+  % fprintf('%6.1f%6.1f' , log10(Pinf ), log10(Dinf))
+  % fprintf('%6.1f%15.7e', log10(Cinf0), objtrue    )
+  % fprintf('   %8.1f'   , center                   )
   if Method==41
-    fprintf('   thresh=%7.1e', thresh)
+    % fprintf('   thresh=%7.1e', thresh)
   end
   
   if kminor
-    fprintf('\n\nStart of first minor itn...\n')
+    % fprintf('\n\nStart of first minor itn...\n')
     keyboard
   end
 
@@ -544,8 +544,8 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
 
 	[R,indef] = chol(ADDA(P,P));
 	if indef
-	  fprintf('\n\n   chol says AD^2A'' is not pos def')
-	  fprintf('\n   Use bigger d2, or set options.Method = 2 or 3')
+	  % fprintf('\n\n   chol says AD^2A'' is not pos def')
+	  % fprintf('\n   Use bigger d2, or set options.Method = 2 or 3')
 	  break
 	end
 
@@ -609,7 +609,7 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
         if precon, dy = pdDDD3 .* dy; end
 
         if istop==3  |  istop==7   % conlim or itnlim
-          fprintf('\n    LSQR stopped early:  istop = %3d', istop)
+          % fprintf('\n    LSQR stopped early:  istop = %3d', istop)
         end
 
         atolold   = outfo.atolold;
@@ -771,7 +771,7 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
     end
 
     if fail
-      fprintf('\n     Linesearch failed (nf too big)');
+      % fprintf('\n     Linesearch failed (nf too big)');
       nfail = nfail + 1;
     else
       nfail = 0;
@@ -805,39 +805,39 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
     if center > 99999
       str5 = sprintf('%3g%8.1e'   , nf          , center      );
     end
-    fprintf([str1 str2 str3 str4 str5])
+    % fprintf([str1 str2 str3 str4 str5])
 
-    if     Method== 1
-      if PDitns==1, fprintf(' %8g', nnz(R)); end
-    elseif Method== 2
-      if PDitns==1, fprintf(' %8g', nnz(R)); end
-    elseif Method== 3
-      fprintf(' %5.1f%7g%7.3f', log10(atolold), itncg, r3ratio)
-    elseif Method==41,
-      resK4 = max( resK4, 1e-99 );
-      fprintf(' %8g%8g%6.1f', nnz(L),nnz(U),log10(resK4))
-    end
+    % if     Method== 1
+    %   if PDitns==1, fprintf(' %8g', nnz(R)); end
+    % elseif Method== 2
+    %   if PDitns==1, fprintf(' %8g', nnz(R)); end
+    % elseif Method== 3
+    %   fprintf(' %5.1f%7g%7.3f', log10(atolold), itncg, r3ratio)
+    % elseif Method==41,
+    %   resK4 = max( resK4, 1e-99 );
+    %   fprintf(' %8g%8g%6.1f', nnz(L),nnz(U),log10(resK4))
+    % end
 
     %-------------------------------------------------------------------
     % Test for termination.
     %-------------------------------------------------------------------
     if kminor
-      fprintf( '\nStart of next minor itn...\n')
+      % fprintf( '\nStart of next minor itn...\n')
       keyboard
     end
 
     if converged
-      fprintf('\nConverged')
+      % fprintf('\nConverged')
     elseif PDitns >= maxitn
-      fprintf('\nToo many iterations')
+      % fprintf('\nToo many iterations')
       inform = 1;
       break
     elseif nfail  >= maxfail
-      fprintf('\nToo many linesearch failures')
+      % fprintf('\nToo many linesearch failures')
       inform = 2;
       break
     elseif step   <= 1e-10
-      fprintf('\nStep lengths too small')
+      % fprintf('\nStep lengths too small')
       inform = 3;
       break
     else
@@ -895,10 +895,10 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
   z(low) = z1(low);
   z(upp) = z(upp) - z2(upp);
   
-  fprintf('\n\nmax |x| =%10.3f', norm(x,inf))
-  fprintf('    max |y| =%10.3f', norm(y,inf))
-  fprintf('    max |z| =%10.3f', norm(z,inf))  % excludes z(fix)
-  fprintf('   scaled')
+  % fprintf('\n\nmax |x| =%10.3f', norm(x,inf))
+  % fprintf('    max |y| =%10.3f', norm(y,inf))
+  % fprintf('    max |z| =%10.3f', norm(z,inf))  % excludes z(fix)
+  % fprintf('   scaled')
 
   bl(fix)= bl(fix)*beta;      % Unscale bl, bu, x, y, z.
   bu(fix)= bu(fix)*beta;
@@ -907,10 +907,10 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
 
   x = x*beta;   y = y*zeta;   z = z*zeta;
 
-  fprintf(  '\nmax |x| =%10.3f', norm(x,inf))
-  fprintf('    max |y| =%10.3f', norm(y,inf))
-  fprintf('    max |z| =%10.3f', norm(z,inf))  % excludes z(fix)
-  fprintf(' unscaled')
+  % fprintf(  '\nmax |x| =%10.3f', norm(x,inf))
+  % fprintf('    max |y| =%10.3f', norm(y,inf))
+  % fprintf('    max |z| =%10.3f', norm(z,inf))  % excludes z(fix)
+  % fprintf(' unscaled')
 
   x(fix) = bl(fix);           % Reinstate x(fix).
 
@@ -920,7 +920,7 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
     x1 = zeros(n,1);   x1(fix) = bl(fix);
     r1 = pdxxxmat( Aname, 1, m, n, x1 );
     b  = b + r1;
-    fprintf('\nmax |x| and max |z| exclude fixed variables')
+    % fprintf('\nmax |x| and max |z| exclude fixed variables')
   end
 
   % Evaluate function at final point.
@@ -935,8 +935,8 @@ function [x,y,z,inform,PDitns,CGitns,time] = ...
   time   = cputime - time;
   str1   = sprintf('\nPDitns  =%10g', PDitns );
   str2   = sprintf(     'itns =%10g', CGitns );
-  fprintf( [str1 ' ' solver str2] )
-  fprintf('    time    =%10.1f', time);
+  % fprintf( [str1 ' ' solver str2] )
+  % fprintf('    time    =%10.1f', time);
 
   pdxxxdistrib( abs(x),abs(z) );   % Private function
 
@@ -966,11 +966,11 @@ function [low,upp,fix] = pdxxxbounds( bl,bu )
   fix  =  find( bl==bu );
   free =  find( bl<=bigL & bu>=bigU );
   
-  fprintf('\n\nBounds:\n  [0,inf]  [-inf,0]')
-  fprintf('  Finite bl  Finite bu  Two bnds   Fixed    Free')
-  fprintf('\n %8g %9g %10g %10g %9g %7g %7g',     ...
-          length(pos), length(neg), length(low),  ...
-          length(upp), length(two), length(fix), length(free))
+  % fprintf('\n\nBounds:\n  [0,inf]  [-inf,0]')
+  % fprintf('  Finite bl  Finite bu  Two bnds   Fixed    Free')
+  % fprintf('\n %8g %9g %10g %10g %9g %7g %7g',     ...
+  %         length(pos), length(neg), length(low),  ...
+  %         length(upp), length(two), length(fix), length(free))
 
 %-----------------------------------------------------------------------
 % End private function pdxxxbounds
@@ -985,8 +985,8 @@ function pdxxxdistrib( x,z )
 % 18 Dec 2000.  First version with 2 vectors.
 
   two  = nargin > 1;
-  fprintf('\n\nDistribution of vector     x')
-  if two, fprintf('         z'); end
+  % fprintf('\n\nDistribution of vector     x')
+  % if two, fprintf('         z'); end
 
   x1   = 10^(floor(log10(max(x)+eps)) + 1);
   z1   = 10^(floor(log10(max(z)+eps)) + 1);
@@ -997,14 +997,14 @@ function pdxxxdistrib( x,z )
     x2 = x1;    x1 = x1/10;
     if k==kmax, x1 = 0; end
     nx = length(find(x>=x1 & x<x2));
-    fprintf('\n[%7.3g,%7.3g )%10g', x1, x2, nx);
+    % fprintf('\n[%7.3g,%7.3g )%10g', x1, x2, nx);
     if two
       nz = length(find(z>=x1 & z<x2));
-      fprintf('%10g', nz);
+      % fprintf('%10g', nz);
     end
   end
 
-  disp(' ')
+  % disp(' ')
 
 %-----------------------------------------------------------------------
 % End private function pdxxxdistrib
@@ -1124,7 +1124,7 @@ function [ x, istop, itn, outfo ] = ...
     v = (1/alfa) * v;    w = v;
   end
 
-  arnorm = alfa * beta;   if arnorm==0, disp(msg(1,:)); return, end
+  arnorm = alfa * beta;   if arnorm==0, return, end
 
   rhobar = alfa;                phibar = beta;          bnorm  = beta;
   rnorm  = beta;
@@ -1132,12 +1132,12 @@ function [ x, istop, itn, outfo ] = ...
   head2  = ' Compatible   LS      Norm A   Cond A';
 
   if show
-    disp(' ')
-    disp([head1 head2])
+    % disp(' ')
+    % disp([head1 head2])
     test1  = 1;         test2  = alfa / beta;
     str1   = sprintf( '%6g %12.5e %10.3e',   itn, x(1), rnorm );
     str2   = sprintf( '  %8.1e %8.1e',       test1, test2 );
-    disp([str1 str2])
+    % disp([str1 str2])
   end
 
   %----------------------------------------------------------------
@@ -1262,9 +1262,9 @@ function [ x, istop, itn, outfo ] = ...
         elseif r3ratio <= 0.5     % Accept dy but make next one more accurate.
           atolnew = atolnew * 0.1;
         else                      % Recompute dy more accurately
-          fprintf('\n                                ')
-          fprintf('                                ')
-          fprintf(' %5.1f%7g%7.3f', log10(atolold), itn, r3ratio)
+          % fprintf('\n                                ')
+          % fprintf('                                ')
+          % fprintf(' %5.1f%7g%7.3f', log10(atolold), itn, r3ratio)
           atol    = atol * 0.1;
           atolnew = atol;
           istop   = 0;
@@ -1294,7 +1294,7 @@ function [ x, istop, itn, outfo ] = ...
         str1 = sprintf( '%6g %12.5e %10.3e',   itn, x(1), rnorm );
         str2 = sprintf( '  %8.1e %8.1e',       test1, test2 );
         str3 = sprintf( ' %8.1e %8.1e',        anorm, acond );
-        disp([str1 str2 str3])
+        % disp([str1 str2 str3])
       end
     end
     if istop > 0, break, end
@@ -1304,17 +1304,17 @@ function [ x, istop, itn, outfo ] = ...
   % Print the stopping condition.
 
   if show
-    disp(' ')
-    disp('LSQR finished')
-    disp(msg(istop+1,:))
-    disp(' ')
+    % disp(' ')
+    % disp('LSQR finished')
+    % disp(msg(istop+1,:))
+    % disp(' ')
     str1 = sprintf( 'istop  =%8g   itn    =%8g',      istop, itn    );
     str2 = sprintf( 'anorm  =%8.1e   acond  =%8.1e',  anorm, acond  );
     str3 = sprintf( 'rnorm  =%8.1e   arnorm =%8.1e',  rnorm, arnorm );
     str4 = sprintf( 'bnorm  =%8.1e   xnorm  =%8.1e',  bnorm, xnorm  );
-    disp([str1 '   ' str2])
-    disp([str3 '   ' str4])
-    disp(' ')
+    % disp([str1 '   ' str2])
+    % disp([str3 '   ' str4])
+    % disp(' ')
   end
 
 %-----------------------------------------------------------------------
