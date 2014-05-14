@@ -10,7 +10,7 @@ neg = 0;
 errorImg = [];
 
 num_classes = size(H_train, 1);
-atoms_per_class = size(D, 2)/num_classes;
+atoms_per_class = ceil(size(D, 2)/num_classes);
 
 fprintf('Atoms per class = %f\n', atoms_per_class);
 
@@ -20,7 +20,7 @@ alpha = compute_sparse_codes(A_test, D);
 fprintf('Classification...\n');
 
 H_act = [];
-H_pred = [];
+H_est = [];
 
 for i = 1 : 1 : size(alpha, 2)
     alp = alpha(:, i);
@@ -31,7 +31,7 @@ for i = 1 : 1 : size(alpha, 2)
         actual_class = I;
         
         H_act = [H_act actual_class];
-        H_pred = [H_pred face_class];
+        H_est = [H_est face_class];
         
         if face_class == actual_class
             pos = pos + 1;
