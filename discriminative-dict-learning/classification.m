@@ -13,9 +13,11 @@ function [H_est, H_act, C, recognition_rate] = classification(D, A, H)
 
 	H_act = [];
 	H_est = [];
-
+    
+    reg1 = 0.25;
+    reg2 = 0;
 	atoms_per_class = ceil(size(D, 2)/size(H, 1));
-	gamma = compute_sparse_codes(A, D);
+	gamma = compute_sparse_codes(A, D, reg1, reg2);
 	pos = 0;
 	neg = 0;
 
@@ -25,7 +27,7 @@ function [H_est, H_act, C, recognition_rate] = classification(D, A, H)
 	    [C, actual_class] = max(H(:, u));
 	    
 	    H_est = [H_est est_class];
-	    H_act = [H_act actual_class]
+	    H_act = [H_act actual_class];
 
 	    if actual_class == est_class
 	        pos = pos + 1;

@@ -1,4 +1,5 @@
-function [cost, grad_alpha, grad_W] = softmaxCost(W, numClasses, inputSize, data, H_train)
+function [cost, grad_alpha, grad_W] = softmax_cost(W, num_classes, input_size, data, H)
+
     % numClasses - the number of classes 
     % inputSize - the size N of the input vector
     % lambda - weight decay parameter
@@ -6,34 +7,28 @@ function [cost, grad_alpha, grad_W] = softmaxCost(W, numClasses, inputSize, data
     %        a single test set
     % labels - an M x 1 matrix containing the labels corresponding for the input data
     
-    data = reshape(data, inputSize, size(H_train, 2));
-    W = reshape(W, inputSize, numClasses);
+    data = reshape(data, input_size, size(H, 2));
+    W = reshape(W, input_size, num_classes);
     W = W';
 
-    numCases = size(data, 2);
+    num_cases = size(data, 2);
     cost = 0;
 
-    numClasses = size(H_train, 1);
-    inputSize = size(data, 1);
-    grad_W = zeros(numClasses, inputSize);
+    num_classes = size(H, 1);
+    input_size = size(data, 1);
+    grad_W = zeros(num_classes, input_size);
 
-    y = H_train;
-    m = numCases;
+    y = H;
+    m = num_cases;
 
-    % note that if we subtract off after taking the exponent, as in the
-    % text, we get NaN
     td = W * data;
-    % save results2.mat td data W
     td = bsxfun(@minus, td, max(td));
     temp1 = exp(td);
     temp2 = temp1' * W;
 
     denominator = sum(temp1);
     p = bsxfun(@rdivide, temp1, denominator);
-    % save('results2.mat', 'p', '-append');
     cost = (-1/m) * sum(sum(y .* log(p)));
-    % save('results2.mat', 't', 'temp1', '-append');
-    % fprintf([num2str(cost) '\n']);
 
     grad_W = (-1/m) * (y - p) * data';
     grad_W = grad_W';
@@ -42,8 +37,8 @@ function [cost, grad_alpha, grad_W] = softmaxCost(W, numClasses, inputSize, data
 
     W_temp = [];
 
-    for i = 1 : 1 : size(H_train, 2)
-        [C, I] = max(H_train(:, i));
+    for i = 1 : 1 : size(H, 2)
+        [C, I] = max(H(:, i));
         W_temp(i, :) = W(I, :);
     end
 
