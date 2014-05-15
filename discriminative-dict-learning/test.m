@@ -1,9 +1,4 @@
-% a = A_train(:, 1:32);
-% alpha = computeSparseCodes(a, D);
-% plot(alpha)
-% classification
-% 
-
+% computes recognition rate using trained parameter W
 D = Di;
 W = Wi;
 alpha = computeSparseCodes(A_test, D);
@@ -24,3 +19,10 @@ end
 
 percentage = pos*100/(pos + neg);
 fprintf(['Classification rate using W ' num2str(percentage) '\n']);
+
+%% Debugging code
+% W = [Wi(:)];
+% d = [alpha(:)];
+% alpha = computeSparseCodes(A_train, Di);
+% [cost, grad_alpha, grad_W] = softmaxCost(Wi, numClasses, dictsize, d, H_train);
+% numGrad = computeNumericalGradient( @(x) softmaxCost(W, numClasses, dictsize, x, H_train), d);
