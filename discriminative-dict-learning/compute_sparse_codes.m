@@ -8,7 +8,7 @@ function alpha = compute_sparse_codes(A, D, reg1, reg2)
 
 %     alpha = [];
 %     for f = 1 : 1 : size(A, 2)
-%         alp = SolveBP(D, A(:, f), size(D, 2));
+%         alp = olveBP(D, A(:, f), size(D, 2));
 %         alpha = [alpha alp];
 %     end
 end

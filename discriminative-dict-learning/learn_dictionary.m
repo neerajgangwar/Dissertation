@@ -1,6 +1,6 @@
-function [D, W] = learn_dictionary(A, H, param)
+function [D, W] = learn_dictionary(A_train, H_train, A_test, H_test, param)
 
-	num_classes = size(H, 1);
+	num_classes = size(H_train, 1);
 	iterations = param.iter;
 	dictsize = param.dictsize;
 	sparsity = param.sparsity;
@@ -11,7 +11,7 @@ function [D, W] = learn_dictionary(A, H, param)
 
 	t0 = iterations/10;
 
-	[Dinit, Winit] = initialization(A, H, dictsize, sparsity);
+	[Dinit, Winit] = initialization(A_train, H_train, dictsize, sparsity);
 
 	Di = normcols(Dinit);
 	Wi = normcols(Winit);
@@ -53,13 +53,15 @@ function [D, W] = learn_dictionary(A, H, param)
 	% W = Wi;	                            
 
 	%% Gradient Descent
+	[H_est, H_act, C, rec_rate] = classification(D, A_test, H_test);
+	fprintf('Recognition rate = %f\n\n', rec_rate);
 	for i = 1 : 1 : iterations
 	    
 	    fprintf(['Computing Sparse Code for iteration ' num2str(i) '...\n']);
-	    alpha = compute_sparse_codes(A, Di, reg1, reg2);
+	    alpha = compute_sparse_codes(A_train, Di, reg1, reg2);
 	    
 	    fprintf(['Gradient descent for iteration ' num2str(i) '...\n']);
-	    [cost, grad_alpha, grad_W] = softmax_cost(Wi(:), num_classes, dictsize, alpha(:), H);
+	    [cost, grad_alpha, grad_W] = softmax_cost(Wi(:), num_classes, dictsize, alpha(:), H_train);
 	    
 	    beta_star = [];
 	    
@@ -78,14 +80,18 @@ function [D, W] = learn_dictionary(A, H, param)
 	    rho = min([rho rho*(t0/i)]);
 	    
 	    Wi = Wi - rho * (grad_W + nu * Wi);
-	    delta_D = ( -(Di*beta_star*alpha') + ((A - Di*alpha)*beta_star'));
+	    delta_D = ( -(Di*beta_star*alpha') + ((A_train - Di*alpha)*beta_star'));
 	    Di = Di - delta_D;
 	    Di = normcols(Di);
 	    Wi = normcols(Wi);
-	    D = Di;
-	    W = Wi;
-        [H_est, H_act, C, recognition_rate] = classification(D, A, H);
-	    fprintf('Recognition rate = %f\n\n', recognition_rate);
+        [H_est, H_act, C, recognition_rate] = classification(Di, A_test, H_test);
+        fprintf('Recognition rate = %f\n\n', recognition_rate);
+        if recognition_rate > rec_rate
+        	rec_rate = recognition_rate;
+        	D = Di;
+        	W = Wi;
+        end
+	    fprintf('Recognition rate = %f\n\n', rec_rate);
 	end
 
 end

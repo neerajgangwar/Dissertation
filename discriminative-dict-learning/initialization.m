@@ -7,7 +7,7 @@ function [Dinit, Winit] = initialization(training_feats, H_train, dictsize, spar
     num_per_class = round(dictsize/num_class); % initial points from each classes
     Dinit = []; % for LC-Ksvd1 and LC-Ksvd2
 
-    iterations = 5;
+    iterations = 20;
 
     for classid = 1 : num_class
         col_ids = find(H_train(classid, :)==1);

@@ -1,0 +1,34 @@
+/Dictionary\ Learning/TestFaces/*
+/Dictionary\ Learning/TrainingFaces/*
+
+DownsamplingRandomfaces/TestFaces/*
+DownsamplingRandomfaces/TrainingFaces/*
+
+EigenFaces/Faces/*
+
+DownsamplingSRC/Results/*
+DownsamplingSRC/TestFaces/*
+DownsamplingSRC/TrainingFaces/*
+
+EigenfacesSRC/TestFaces/*
+EigenfacesSRC/TrainingFaces/*
+
+collect-data/*.mat
+collect-data/Images/*
+collect-data/ImagesCropped/*
+
+discriminative-dict-learning/*.mat
+
+eigenfaces-src/data/*
+eigenfaces-src/results/*
+
+downsampling-src/results/*
+downsampling-src/data/*
+
+*.ipynb
+*.mat
+*.txt
+*.tex
+
+k-svd/data/*
+
